@@ -32,13 +32,24 @@ async def async_main(config):
         message = f"Numbers: {sorted(numbers)}, Superzahl: {r.randint(0, 9)}"
         telegram.send(chat_id, message)
 
+    def get_games(message: str):
+        parts = message.split(' ')
+        if len(parts) == 1:
+            return 1
+        try:
+            return int(parts[1])
+        except:
+            return 1
+
     def print_updates():
         for u in telegram.updates:
             message = u['message']
             if '/lotto' in message['text']:
-                print_numbers(message['chat']['id'])
+                for i in range(0, get_games(message['text'])):
+                    print_numbers(message['chat']['id'])
             if '/sena' in message['text']:
-                print_sena(message['chat']['id'])
+                for i in range(0, get_games(message['text'])):
+                    print_sena(message['chat']['id'])
 
     interval = 10  # seconds
 
